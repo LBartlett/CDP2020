@@ -11,12 +11,13 @@
 #######################
 
 
-### Set directory where reference data, parameter sheet, assessments etc. are stored
+### Set directory where reference data, parameter sheet, assessments etc. are stored - probably the wd for this pulled repo
 
-RefDir <- 'C:/Users/ljb87745/Google Drive/PostDoc2/BroodMix/PolyMax Model/StandAlone Model Paper/'
+RefDir <- getwd()
 
 ## Set a storage directory for simulations outputs, better not on 'cloud storage' as can cause problems
-OpDir <- 'Z:/Documents/BroodSims/'
+#OpDir <- 'Z:/Documents/BroodSims/'
+OpDir <- 'C:/Users/lbart/Documents/BroodSims/'
 
 ## Set locaton from which to base development time
 # Create own by measuring bee development times
@@ -41,7 +42,7 @@ TaskRef<- 'Delaplane'
 # Set parameters to be explored / varied / set
 
 # Read in initialisation file where parameters can be edited
-Init <- read.csv(paste0(RefDir,'Initialisation.csv'),header=T)
+Init <- read.csv(paste0(RefDir,'/Initialisation.csv'),header=T)
 
 #Ages
 #Select location to draw development times from
@@ -49,7 +50,7 @@ DevLoc <- SITE
 
 #Pull development data for that location
 
-DevData <- read.csv(file = paste0(RefDir,"DevelopmentData/",DevLoc,".csv"), 
+DevData <- read.csv(file = paste0(RefDir,"/DevelopmentData/",DevLoc,".csv"), 
                     header = T)
 
 
@@ -178,7 +179,7 @@ for (EmA in ERange){
     # Individual run finished, save.
     RepTrack <- RepTrack+1
     save(ExpRef, PolyTrack, EmA, PuA, HaA,
-         file = paste0(OpDir,'/Run',as.character(RepTrack),'.RData')
+         file = paste0(OpDir,'Run',as.character(RepTrack),'.RData')
     )   
     
     # Monitor progress
@@ -197,7 +198,8 @@ rm(list =
 ##################
 
 # Decide what resolutions plots are to be at
-TRes <- 'Colony'
+# options are 'Colony',''Experiment' ,or 'Both'
+TRes <- 'Both'
 
 #### For approximating age groupings & survivorship of bee brood cohorts
 
@@ -236,7 +238,7 @@ for(Run in 1:NRuns){
 }
 
 # Clear out the no longer required parts of the workspace
-rm(list = setdiff(ls(), c('RefL', 'TrackL', 'EmL', 'PuL', 'HaL', 'NRuns', 'RT', 'RefDir', 'TaskRef')))
+rm(list = setdiff(ls(), c('RefL', 'TrackL', 'EmL', 'PuL', 'HaL', 'NRuns', 'RT', 'RefDir','RunsDir', 'TaskRef', 'TRes')))
 
 ## Create a function to collapse totals of bees across frames into recipient colonies
 
@@ -275,7 +277,7 @@ CollapseL <- mapply(FUN = CollapseF, YardA = TrackL, EmA = EmL, YardRef = RefL, 
 # Define age distributions of different tasks where 1 = day of eclosure (emergence)
 # Read in median ages for different tasks
 
-TaskAges <- read.csv(paste0(RefDir,'TaskAges/',TaskRef,'.csv'), header = T)
+TaskAges <- read.csv(paste0(RefDir,'/TaskAges/',TaskRef,'.csv'), header = T)
 TaskAges$Task <- as.character(TaskAges$Task)
 TaskAges$Category <- as.character(TaskAges$Category)
 
