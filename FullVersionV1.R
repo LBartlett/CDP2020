@@ -325,7 +325,7 @@ QuantDay <- function(PTV, Quant){
   
 }
 
-# Create function for average empahsis for each day across all replicates
+# Create function for average emphasis for each day across all replicates
 # creates the 'solid' plot lines
 
 AEmph <- function(TaskEmphases){
@@ -409,7 +409,8 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
     par(mar=c(5,6,8,2))
     #Make plot
     plot(x = 0:NROW(TaskAL[[1]]), 
-         y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ), 
+         y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
+         yaxt = "n", 
          type = "n", xlab = 'Days  Post-Assessment', 
          ylab = 'Cohort Contribution\n(Arbitrary Units)',
          main = paste0(CurTask,', Colony ',TC,'\n Approx. Peak Day: ',PDM,'\n Approx. Q16 Day: ',MQ16, '\n Approx. Q84 Day: ',MQ84)
@@ -461,7 +462,8 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
   par(mar=c(5,6,8,2))
   #Make plot
   plot(x = 0:NROW(AdultAL[[1]]), 
-       y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ), 
+       y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
+       yaxt = "n", 
        type = "n", xlab = 'Days  Post-Assessment', 
        ylab = 'Number of Alive & Emerged Cohort\n(Whole Experiment)',
        main = paste0('Adults from Cohort, Colony ',TC,'\n Approx. Peak Day: ',PDMAAL, '\n Approx. Q16 Day: ',AALMQ16, '\n Approx. Q84 Day: ',AALMQ84)
@@ -522,7 +524,8 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
     par(mar=c(5,6,8,2))
     #Make plot
     plot(x = 0:NROW(TaskAL[[1]]), 
-         y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ), 
+         y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
+         yaxt = "n", 
          type = "n", xlab = 'Days  Post-Assessment', 
          ylab = 'Cohort Contribution\n(Arbitrary Units)',
          main = paste0(CurTask,', All Colonies\n','Approx. Peak Day: ',PDM,'\n Approx. Q16 Day: ',MQ16, '\n Approx. Q84 Day: ',MQ84)
@@ -573,7 +576,8 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
   par(mar=c(5,6,8,2))
   #Make plot
   plot(x = 0:NROW(AdultAL[[1]]), 
-       y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ), 
+       y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
+       yaxt = "n",
        type = "n", xlab = 'Days  Post-Assessment', 
        ylab = 'Number of Alive & Emerged Cohort\n(Whole Experiment)',
        main = paste0('Adults from Cohort, All Colonies \n', 'Approx. Peak Day: ',PDMAAL, '\n Approx. Q16 Day: ',AALMQ16, '\n Approx. Q84 Day: ',AALMQ84)
