@@ -1,7 +1,8 @@
-#### Rough stochastic simulation for PolyMax
+#### Simulations for anticipating when an observed cohort of developing honey bee broood will perform certain tasks in future
+#### Itended to guide experiments and aid in analysis of experimental data where brood are subjected to acute treatment events
+#### Associated Manuscript:
+#### Written by:
 #### Lewis J Bartlett lewis.bartlett@uga.edu
-
-#### For approximating age & task groupings or survivorship of bee brood cohorts
 
 ## Here, uses an example involving brood transplantation 
 
@@ -16,10 +17,10 @@
 RefDir <- getwd()
 
 ## Set a storage directory for simulations outputs, better not on 'cloud storage' as can cause problems
-#OpDir <- 'Z:/Documents/BroodSims/'
-OpDir <- 'C:/Users/lbart/Documents/BroodSims/'
+OpDir <- 'D:/Simulation Hardwrite Space/BroodSims/'
+#OpDir <- 'C:/Users/lbart/Documents/BroodSims/'
 
-## Set locaton from which to base development time
+## Set location from which to base development time
 # Create own by measuring bee development times
 # Or choose from those provided as part of this publication:
 # 'Alabama', 'Georgia', ...
@@ -193,9 +194,9 @@ rm(list =
      ls()[- match(c('OpDir', 'RefDir', 'Init','TaskRef'), ls())]
 )
 
-##################
+###############################
 ### Part Two: task allocation##
-##################
+###############################
 
 # Decide what resolutions plots are to be at
 # options are 'Colony',''Experiment' ,or 'Both'
