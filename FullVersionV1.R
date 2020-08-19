@@ -393,13 +393,13 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
     
     PeakDays <- lapply(TaskAL, QuantDay, Quant = 0.5)
     
-    PDM <- round(mean(unlist(PeakDays)), digits = 2)
+    PDM <- round(mean(unlist(PeakDays)), digits = 0)
     
     Q16Days <- lapply(TaskAL, QuantDay, Quant = 0.16)
     Q84Days <- lapply(TaskAL, QuantDay, Quant = 0.84)
     
-    MQ16 <- round(mean(unlist(Q16Days)), digits = 2)
-    MQ84 <- round(mean(unlist(Q84Days)), digits = 2)
+    MQ16 <- round(mean(unlist(Q16Days)), digits = 0)
+    MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
     
     #Plot through the list
     # Colour w/ opacity
@@ -444,14 +444,14 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
   
   PeakAAL <- lapply(AdultAL, QuantDay, Quant = 0.5)
   
-  PDMAAL <- round(mean(unlist(PeakAAL)), digits = 2)
+  PDMAAL <- round(mean(unlist(PeakAAL)), digits = 0)
   
   
   AALQ16Days <- lapply(AdultAL, QuantDay, Quant = 0.16)
   AALQ84Days <- lapply(AdultAL, QuantDay, Quant = 0.84)
   
-  AALMQ16 <- round(mean(unlist(AALQ16Days)), digits = 2)
-  AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 2)
+  AALMQ16 <- round(mean(unlist(AALQ16Days)), digits = 0)
+  AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
   
   #Plot through the list
   # Colour w/ opacity
@@ -506,13 +506,13 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
     
     PeakDays <- lapply(TaskAL, QuantDay, Quant = 0.5)
     
-    PDM <- round(mean(unlist(PeakDays)), digits = 2)
+    PDM <- round(mean(unlist(PeakDays)), digits = 0)
     
     Q16Days <- lapply(TaskAL, QuantDay, Quant = 0.16)
     Q84Days <- lapply(TaskAL, QuantDay, Quant = 0.84)
     
-    MQ16 <- round(mean(unlist(Q16Days)), digits = 2)
-    MQ84 <- round(mean(unlist(Q84Days)), digits = 2)
+    MQ16 <- round(mean(unlist(Q16Days)), digits = 0)
+    MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
     
     #Plot through the list
     # Colour w/ opacity
@@ -557,13 +557,13 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
   
   PeakAAL <- lapply(AdultAL, QuantDay, Quant = 0.5)
   
-  PDMAAL <- round(mean(unlist(PeakAAL)), digits = 2)
+  PDMAAL <- round(mean(unlist(PeakAAL)), digits = 0)
   
   AALQ16Days <- lapply(AdultAL, QuantDay, Quant = 0.16)
   AALQ84Days <- lapply(AdultAL, QuantDay, Quant = 0.84)
   
-  AALMQ16 <- round(mean(unlist(AALQ16Days)), digits = 2)
-  AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 2)
+  AALMQ16 <- round(mean(unlist(AALQ16Days)), digits = 0)
+  AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
   
   #Plot through the list
   # Colour w/ opacity
