@@ -17,8 +17,7 @@
 RefDir <- getwd()
 
 ## Set a storage directory for simulations outputs, better not on 'cloud storage' as can cause problems
-OpDir <- 'D:/Simulation Hardwrite Space/BroodSims/'
-#OpDir <- 'C:/Users/lbart/Documents/BroodSims/'
+OpDir <- 'Z:/Documents/BroodSims/'
 
 ## Set location from which to base development time
 # Create own by measuring bee development times
@@ -200,7 +199,7 @@ rm(list =
 
 # Decide what resolutions plots are to be at
 # options are 'Colony',''Experiment' ,or 'Both'
-TRes <- 'Both'
+TRes <- 'Colony'
 
 #### For approximating age groupings & survivorship of bee brood cohorts
 
@@ -363,6 +362,24 @@ AdultAll <- function(MaxAge, EmA, TrackA){
   return(TaskEmph)
 }
 
+# Create function to subset the full data set to just the desired colonies
+# This can be easily cloned and modified to create bespoke plotting / subsets based on e.g. treatments, if treatments were per-frame and split across colonies
+
+CFilt <- function(TrackA, TrackRef, ColFil){
+  
+  Filt <- vector(mode = 'list', length = length(TrackA))
+  
+  for(N in 1:(length(TrackA))){
+    
+    Filt[[N]] <- TrackA[[N]][which(TrackRef[[1]]$Colony == ColFil),,]
+    
+  }
+  
+  return(Filt)
+  
+}
+
+
 # Here is where we resolve to colony and/or experiment if we want by colony or across whole experiment graphical plots.
 
 if(TRes == 'Colony'  |  TRes == 'Both'){
@@ -378,29 +395,86 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
   # Cycle through colonies
   
   for(TC in 1:NC){
-  
-  ## Create list to hold task emphases for cohort for each task
-  TaskEs <- vector(mode = "list", length = NROW(TaskAges))
-  
-  for(N in 1:NROW(TaskAges)){
     
-    CurTask <- TaskAges$Task[N]
+    ## Create list to hold task emphases for cohort for each task
+    TaskEs <- vector(mode = "list", length = NROW(TaskAges))
     
-    # Create list of relative contribution of target cohort to this task across experiment through time
+    ## Subset full tracking list to only data from this colony [track list colony subset]
     
-    TaskAL <- mapply(FUN = TaskAll, TrackA = TrackL, EmA = EmL, 
-                     MoreArgs = list( Task = CurTask, TaskList = TaskAges, MaxAge = RT),
-                     SIMPLIFY = F)
+    TLCS <- CFilt(TrackA = TrackL, TrackRef = RefL, ColFil = TC)
     
-    PeakDays <- lapply(TaskAL, QuantDay, Quant = 0.5)
+    for(N in 1:NROW(TaskAges)){
+      
+      CurTask <- TaskAges$Task[N]
+      
+      # Create list of relative contribution of target cohort to this task across experiment through time
+      
+      TaskAL <- mapply(FUN = TaskAll, TrackA = TLCS, EmA = EmL, 
+                       MoreArgs = list( Task = CurTask, TaskList = TaskAges, MaxAge = RT),
+                       SIMPLIFY = F)
+      
+      PeakDays <- lapply(TaskAL, QuantDay, Quant = 0.5)
+      
+      PDM <- round(mean(unlist(PeakDays)), digits = 0)
+      
+      Q16Days <- lapply(TaskAL, QuantDay, Quant = 0.16)
+      Q84Days <- lapply(TaskAL, QuantDay, Quant = 0.84)
+      
+      MQ16 <- round(mean(unlist(Q16Days)), digits = 0)
+      MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
+      
+      #Plot through the list
+      # Colour w/ opacity
+      CC <- rgb(0.6, 0.6, 0.6, 0.6)
+      # Suitable margins
+      par(mar=c(5,6,8,2))
+      #Make plot
+      plot(x = 0:NROW(TaskAL[[1]]), 
+           y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
+           yaxt = "n", 
+           type = "n", xlab = 'Days  Post-Assessment', 
+           ylab = 'Cohort Contribution\n(Arbitrary Units)',
+           main = paste0(CurTask,', Colony ',TC,'\n Approx. Peak Day: ',PDM,'\n Approx. Q16 Day: ',MQ16, '\n Approx. Q84 Day: ',MQ84)
+      )
+      
+      # Each replicate
+      
+      for(X in 1: length(TaskAL)){
+        
+        points(x = 1:NROW(TaskAL[[X]]), y = TaskAL[[X]], 
+               type = 'l', lwd = 1.2, col = CC)
+        
+      }
+      
+      # Summative average
+      
+      points(x = 1:NROW(TaskAL[[X]]), y = AEmph(TaskAL), 
+             type = 'l', lwd = 5, col = 'black')
+      
+      
+      # Append emphasis list to storage list
+      
+      TaskEs[[N]] <- TaskAL
+      
+    }
     
-    PDM <- round(mean(unlist(PeakDays)), digits = 0)
     
-    Q16Days <- lapply(TaskAL, QuantDay, Quant = 0.16)
-    Q84Days <- lapply(TaskAL, QuantDay, Quant = 0.84)
+    # For total number emerged
     
-    MQ16 <- round(mean(unlist(Q16Days)), digits = 0)
-    MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
+    AdultAL <- mapply(FUN = AdultAll, TrackA = TLCS, EmA = EmL, 
+                      MoreArgs = list(MaxAge = RT),
+                      SIMPLIFY = F)
+    
+    PeakAAL <- lapply(AdultAL, QuantDay, Quant = 0.5)
+    
+    PDMAAL <- round(mean(unlist(PeakAAL)), digits = 0)
+    
+    
+    AALQ16Days <- lapply(AdultAL, QuantDay, Quant = 0.16)
+    AALQ84Days <- lapply(AdultAL, QuantDay, Quant = 0.84)
+    
+    AALMQ16 <- round(mean(unlist(AALQ16Days)), digits = 0)
+    AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
     
     #Plot through the list
     # Colour w/ opacity
@@ -408,84 +482,33 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
     # Suitable margins
     par(mar=c(5,6,8,2))
     #Make plot
-    plot(x = 0:NROW(TaskAL[[1]]), 
-         y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
+    plot(x = 0:NROW(AdultAL[[1]]), 
+         y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
          yaxt = "n", 
          type = "n", xlab = 'Days  Post-Assessment', 
-         ylab = 'Cohort Contribution\n(Arbitrary Units)',
-         main = paste0(CurTask,', Colony ',TC,'\n Approx. Peak Day: ',PDM,'\n Approx. Q16 Day: ',MQ16, '\n Approx. Q84 Day: ',MQ84)
+         ylab = 'Number of Alive & Emerged Cohort\n(Whole Experiment)',
+         main = paste0('Adults from Cohort, Colony ',TC,'\n Approx. Peak Day: ',PDMAAL, '\n Approx. Q16 Day: ',AALMQ16, '\n Approx. Q84 Day: ',AALMQ84)
     )
     
-    # Each replicate
-    
-    for(X in 1: length(TaskAL)){
+    for(X in 1: length(AdultAL)){
       
-      points(x = 1:NROW(TaskAL[[X]]), y = TaskAL[[X]], 
+      points(x = 1:NROW(AdultAL[[X]]), y = AdultAL[[X]], 
              type = 'l', lwd = 1.2, col = CC)
       
     }
     
     # Summative average
-    
-    points(x = 1:NROW(TaskAL[[X]]), y = AEmph(TaskAL), 
+    points(x = 1:NROW(AdultAL[[X]]), y = AEmph(AdultAL), 
            type = 'l', lwd = 5, col = 'black')
     
     
-    # Append emphasis list to storage list
+    # Append to per-colony storage lists
     
-    TaskEs[[N]] <- TaskAL
-    
-  }
-  
-  
-  # For total number emerged
-  
-  AdultAL <- mapply(FUN = AdultAll, TrackA = TrackL, EmA = EmL, 
-                    MoreArgs = list(MaxAge = RT),
-                    SIMPLIFY = F)
-  
-  PeakAAL <- lapply(AdultAL, QuantDay, Quant = 0.5)
-  
-  PDMAAL <- round(mean(unlist(PeakAAL)), digits = 0)
-  
-  
-  AALQ16Days <- lapply(AdultAL, QuantDay, Quant = 0.16)
-  AALQ84Days <- lapply(AdultAL, QuantDay, Quant = 0.84)
-  
-  AALMQ16 <- round(mean(unlist(AALQ16Days)), digits = 0)
-  AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
-  
-  #Plot through the list
-  # Colour w/ opacity
-  CC <- rgb(0.6, 0.6, 0.6, 0.6)
-  # Suitable margins
-  par(mar=c(5,6,8,2))
-  #Make plot
-  plot(x = 0:NROW(AdultAL[[1]]), 
-       y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
-       yaxt = "n", 
-       type = "n", xlab = 'Days  Post-Assessment', 
-       ylab = 'Number of Alive & Emerged Cohort\n(Whole Experiment)',
-       main = paste0('Adults from Cohort, Colony ',TC,'\n Approx. Peak Day: ',PDMAAL, '\n Approx. Q16 Day: ',AALMQ16, '\n Approx. Q84 Day: ',AALMQ84)
-  )
-  
-  for(X in 1: length(AdultAL)){
-    
-    points(x = 1:NROW(AdultAL[[X]]), y = AdultAL[[X]], 
-           type = 'l', lwd = 1.2, col = CC)
+    ColonyTB[[TC]] <- TaskEs
+    ColonyAB[[TC]] <- AdultAL
     
   }
   
-  # Summative average
-  points(x = 1:NROW(AdultAL[[X]]), y = AEmph(AdultAL), 
-         type = 'l', lwd = 5, col = 'black')
-  
-  }
-  
-  # Append to per-colony storage lists
-  
-  ColonyTB[[TC]] <- TaskEs
-  ColonyAB[[TC]] <- AdultAL
   
 }
 
@@ -598,7 +621,7 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
 }
 
 #
-### Storage lists can be used with easily modified code above to rederive numbers embedded in
+### Storage lists can be used with easily modified code above to retrieve numbers embedded in
 ### graphics for further analysis / easier  exportation.
 
 # Code by Dr. Lewis J. Bartlett. lewis.bartlett@uga.edu
