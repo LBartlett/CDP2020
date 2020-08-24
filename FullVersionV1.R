@@ -1,5 +1,5 @@
-#### Simulations for anticipating when an observed cohort of developing honey bee broood will perform certain tasks in future
-#### Itended to guide experiments and aid in analysis of experimental data where brood are subjected to acute treatment events
+#### Simulations for anticipating when an observed cohort of developing honey bee brood will perform certain tasks in future
+#### Intended to guide experiments and aid in analysis of experimental data where brood are subjected to acute treatment events
 #### Associated Manuscript:
 #### Written by:
 #### Lewis J Bartlett lewis.bartlett@uga.edu
@@ -17,7 +17,8 @@
 RefDir <- getwd()
 
 ## Set a storage directory for simulations outputs, better not on 'cloud storage' as can cause problems
-OpDir <- 'Z:/Documents/BroodSims/'
+#OpDir <- 'Z:/Documents/BroodSims/'
+OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
 
 ## Set location from which to base development time
 # Create own by measuring bee development times
@@ -50,7 +51,7 @@ DevLoc <- SITE
 
 #Pull development data for that location
 
-DevData <- read.csv(file = paste0(RefDir,"/DevelopmentData/",DevLoc,".csv"), 
+DevData <- read.csv(file = paste0(RefDir,"/DevelopmentData/",DevLoc,".csv"),
                     header = T)
 
 
@@ -382,6 +383,12 @@ CFilt <- function(TrackA, TrackRef, ColFil){
 
 # Here is where we resolve to colony and/or experiment if we want by colony or across whole experiment graphical plots.
 
+# Set some universal plotting parameters
+# Colour w/ opacity
+CC <- rgb(0.6, 0.6, 0.6, 0.6)
+# Suitable margins
+par(mar=c(5,6,8,2))
+
 if(TRes == 'Colony'  |  TRes == 'Both'){
   
   # Pull number of colonies
@@ -424,10 +431,6 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
       MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
       
       #Plot through the list
-      # Colour w/ opacity
-      CC <- rgb(0.6, 0.6, 0.6, 0.6)
-      # Suitable margins
-      par(mar=c(5,6,8,2))
       #Make plot
       plot(x = 0:NROW(TaskAL[[1]]), 
            y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
@@ -477,10 +480,7 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
     AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
     
     #Plot through the list
-    # Colour w/ opacity
-    CC <- rgb(0.6, 0.6, 0.6, 0.6)
-    # Suitable margins
-    par(mar=c(5,6,8,2))
+
     #Make plot
     plot(x = 0:NROW(AdultAL[[1]]), 
          y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
@@ -541,10 +541,7 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
     MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
     
     #Plot through the list
-    # Colour w/ opacity
-    CC <- rgb(0.6, 0.6, 0.6, 0.6)
-    # Suitable margins
-    par(mar=c(5,6,8,2))
+
     #Make plot
     plot(x = 0:NROW(TaskAL[[1]]), 
          y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
@@ -593,10 +590,7 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
   AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
   
   #Plot through the list
-  # Colour w/ opacity
-  CC <- rgb(0.6, 0.6, 0.6, 0.6)
-  # Suitable margins
-  par(mar=c(5,6,8,2))
+
   #Make plot
   plot(x = 0:NROW(AdultAL[[1]]), 
        y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
