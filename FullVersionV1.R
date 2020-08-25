@@ -17,8 +17,8 @@
 RefDir <- getwd()
 
 ## Set a storage directory for simulations outputs, better not on 'cloud storage' as can cause problems
-#OpDir <- 'Z:/Documents/BroodSims/'
-OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
+OpDir <- 'Z:/Documents/BroodSims/'
+#OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
 
 ## Set location from which to base development time
 # Create own by measuring bee development times
@@ -28,9 +28,9 @@ OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
 SITE <- 'Alabama'
 
 ## Choose task allocation reference
-# Options from: '...
+# Options: 'Delaplane' [recommended]; 'Huang', ...
 
-TaskRef<- 'Delaplane'
+TaskRef<- 'Huang'
 
 ## All other parameters should be specified in 'Initialisation.csv'
 
@@ -200,7 +200,7 @@ rm(list =
 
 # Decide what resolutions plots are to be at
 # options are 'Colony',''Experiment' ,or 'Both'
-TRes <- 'Experiment'
+TRes <- 'Colony'
 
 #### For approximating age groupings & survivorship of bee brood cohorts
 
