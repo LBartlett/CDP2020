@@ -143,7 +143,12 @@ for (EmA in ERange){
     
     # Create death rate vector
     # Rows correspond to bee age, with appropriate death likelihood for that day
-    MortV <- c(rep(EMort, times = HaA), rep(LMort, times = PuA - HaA), rep(PMort, times = EmA - PuA), (((1:(NCOL(AMat)-EmA))*AMortScale) + AMortBase) )
+    AD <- (1:(NCOL(AMat)-EmA))
+    MortV <- c(rep(EMort, times = HaA), 
+               rep(LMort, times = PuA - HaA), 
+               rep(PMort, times = EmA - PuA), 
+               1/(1+ ( ((1/AMortBase)-1) * (exp(-AMortScale*AD^2)  ) ) )
+               )
     
     # Convert to survival vector for speedier code
     SurV <- 1-MortV

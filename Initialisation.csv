@@ -4,7 +4,7 @@ Reps,5,Technical repeats per DTSamp,20
 EggMort,0.03,Daily mortality rate of eggs,0.03
 LarvMort,0.01,Daily mortality rate of milkbrood / larvae,0.01
 PupMort,0.001,Daily mortality rate of milkbrood / pupae,0.001
-BaseAdultMort,0.02,Daily adult mortality at age = 1 day,0.02
-DailyAddMort,0.005,Additional daily adult mortality per day survived,0.005
+BaseAdultMort,0.005,Daily adult mortality at age = 1 day,0.005
+DailyAddMort,0.0075,Controls logistic increase in daily adult mortality per day survived,0.0075
 FrameSize,5500,Maximum number of cells on a brood frame,5500
 RunTime,60,Number of days for each simultion to run for,60
