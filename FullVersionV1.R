@@ -199,7 +199,7 @@ rm(list =
 
 # Decide what resolutions plots are to be at
 # options are 'Colony',''Experiment' ,or 'Both'
-TRes <- 'Colony'
+TRes <- 'Experiment'
 
 #### For approximating age groupings & survivorship of bee brood cohorts
 
