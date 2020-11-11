@@ -16,9 +16,9 @@
 
 RefDir <- getwd()
 
-## Set a storage directory for simulations outputs, better not on 'cloud storage' as can cause problems
-OpDir <- 'Z:/Documents/BroodSims/'
-#OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
+## Set a storage directory for simulations outputs, better not to be on 'cloud storage' as can cause problems
+#OpDir <- 'Z:/Documents/BroodSims/'
+OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
 
 ## Set location from which to base development time
 # Create own by measuring bee development times
@@ -30,7 +30,7 @@ SITE <- 'Alabama'
 ## Choose task allocation reference
 # Options: 'Delaplane' [recommended]; 'Huang', ...
 
-TaskRef<- 'Huang'
+TaskRef<- 'Delaplane'
 
 ## All other parameters should be specified in 'Initialisation.csv'
 
