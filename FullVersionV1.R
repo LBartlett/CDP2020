@@ -17,8 +17,7 @@
 RefDir <- getwd()
 
 ## Set a storage directory for simulations outputs, better not to be on 'cloud storage' as can cause problems
-#OpDir <- 'Z:/Documents/BroodSims/'
-OpDir <- 'D:/Simulation Hardwrite Space/Broodsims/'
+OpDir <- 'D:/BroodMixAnalaysis/SimOutputs/'
 
 ## Set location from which to base development time
 # Create own by measuring bee development times
@@ -117,7 +116,7 @@ for (EmA in ERange){
     # Initialises model
     
     #Pull reference
-    ExpRef <- FrameD[,1:4]
+    ExpRef <- FrameD
     ExpRef$CTot <- MaxSize*FrameD$Size
     
     # Matrix with row for each frame, columns for numbers of individuals at each age from laying
@@ -148,7 +147,7 @@ for (EmA in ERange){
                rep(LMort, times = PuA - HaA), 
                rep(PMort, times = EmA - PuA), 
                1/(1+ ( ((1/AMortBase)-1) * (exp(-AMortScale*AD^2)  ) ) )
-               )
+    )
     
     # Convert to survival vector for speedier code
     SurV <- 1-MortV
@@ -396,9 +395,12 @@ par(mar=c(5,6,8,2))
 
 if(TRes == 'Colony'  |  TRes == 'Both'){
   
-  # Pull number of colonies
+  par(mfrow = c(3,4))
   
-  NC <- NROW(CollapseL[[1]][,1,1])
+  # Pull number of colonies
+  Colonies <- unique(RefL[[1]]$Colony)
+  NC <- NROW(Colonies)
+  #NC <- NROW(CollapseL[[1]][,1,1])
   
   # Create storage vectors for each colony
   ColonyTB <- vector(mode = "list", length = NC)
@@ -408,12 +410,15 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
   
   for(TC in 1:NC){
     
+    # Colony name
+    TCName <- Colonies[TC]
+    
     ## Create list to hold task emphases for cohort for each task
     TaskEs <- vector(mode = "list", length = NROW(TaskAges))
     
     ## Subset full tracking list to only data from this colony [track list colony subset]
     
-    TLCS <- CFilt(TrackA = TrackL, TrackRef = RefL, ColFil = TC)
+    TLCS <- CFilt(TrackA = TrackL, TrackRef = RefL, ColFil = TCName)
     
     for(N in 1:NROW(TaskAges)){
       
@@ -442,7 +447,7 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
            yaxt = "n", 
            type = "n", xlab = 'Days  Post-Assessment', 
            ylab = 'Cohort Contribution\n(Arbitrary Units)',
-           main = paste0(CurTask,', Colony ',TC,'\n Approx. Peak Day: ',PDM,'\n Approx. Q16 Day: ',MQ16, '\n Approx. Q84 Day: ',MQ84)
+           main = paste0(CurTask,', Colony ',TCName,'\n Approx. Peak Day: ',PDM,'\n Approx. Q16 Day: ',MQ16, '\n Approx. Q84 Day: ',MQ84)
       )
       
       # Each replicate
@@ -485,14 +490,14 @@ if(TRes == 'Colony'  |  TRes == 'Both'){
     AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
     
     #Plot through the list
-
+    
     #Make plot
     plot(x = 0:NROW(AdultAL[[1]]), 
          y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
          yaxt = "n", 
          type = "n", xlab = 'Days  Post-Assessment', 
          ylab = 'Number of Alive & Emerged Cohort\n(Whole Experiment)',
-         main = paste0('Adults from Cohort, Colony ',TC,'\n Approx. Peak Day: ',PDMAAL, '\n Approx. Q16 Day: ',AALMQ16, '\n Approx. Q84 Day: ',AALMQ84)
+         main = paste0('Adults from Cohort, Colony ',TCName,'\n Approx. Peak Day: ',PDMAAL, '\n Approx. Q16 Day: ',AALMQ16, '\n Approx. Q84 Day: ',AALMQ84)
     )
     
     for(X in 1: length(AdultAL)){
@@ -546,7 +551,7 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
     MQ84 <- round(mean(unlist(Q84Days)), digits = 0)
     
     #Plot through the list
-
+    
     #Make plot
     plot(x = 0:NROW(TaskAL[[1]]), 
          y = seq(from = 0, to = (max(unlist(TaskAL))*1.05), length.out =(NROW(TaskAL[[1]])+1) ),
@@ -595,7 +600,7 @@ if (TRes == 'Experiment'  |  TRes == 'Both'){
   AALMQ84 <- round(mean(unlist(AALQ84Days)), digits = 0)
   
   #Plot through the list
-
+  
   #Make plot
   plot(x = 0:NROW(AdultAL[[1]]), 
        y = seq(from = 0, to = (max(unlist(AdultAL))*1.05), length.out =(NROW(AdultAL[[1]])+1) ),
