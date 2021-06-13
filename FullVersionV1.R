@@ -395,8 +395,6 @@ par(mar=c(5,6,8,2))
 
 if(TRes == 'Colony'  |  TRes == 'Both'){
   
-  par(mfrow = c(3,4))
-  
   # Pull number of colonies
   Colonies <- unique(RefL[[1]]$Colony)
   NC <- NROW(Colonies)
